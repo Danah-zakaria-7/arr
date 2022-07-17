@@ -1,31 +1,342 @@
-﻿
-Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.2.32616.157
-MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "lap1 - ( DS )", "lap1 - ( DS )\lap1 - ( DS ).vcxproj", "{6BD3C210-3249-4AE5-A2F1-11B74F28CEDA}"
-EndProject
-Global
-	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|x64 = Debug|x64
-		Debug|x86 = Debug|x86
-		Release|x64 = Release|x64
-		Release|x86 = Release|x86
-	EndGlobalSection
-	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{6BD3C210-3249-4AE5-A2F1-11B74F28CEDA}.Debug|x64.ActiveCfg = Debug|x64
-		{6BD3C210-3249-4AE5-A2F1-11B74F28CEDA}.Debug|x64.Build.0 = Debug|x64
-		{6BD3C210-3249-4AE5-A2F1-11B74F28CEDA}.Debug|x86.ActiveCfg = Debug|Win32
-		{6BD3C210-3249-4AE5-A2F1-11B74F28CEDA}.Debug|x86.Build.0 = Debug|Win32
-		{6BD3C210-3249-4AE5-A2F1-11B74F28CEDA}.Release|x64.ActiveCfg = Release|x64
-		{6BD3C210-3249-4AE5-A2F1-11B74F28CEDA}.Release|x64.Build.0 = Release|x64
-		{6BD3C210-3249-4AE5-A2F1-11B74F28CEDA}.Release|x86.ActiveCfg = Release|Win32
-		{6BD3C210-3249-4AE5-A2F1-11B74F28CEDA}.Release|x86.Build.0 = Release|Win32
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {D244FA84-5114-4B3F-92DF-6C74E6396B1E}
-	EndGlobalSection
-EndGlobal
+#pragma once
+
+class arrayListType
+{
+	private:
+		int* list;
+		int length; 
+		int maxSize;
+	public:
+	
+		
+		arrayListType(int size = 100);
+		int most_repeated();
+		bool isEmpty();
+		bool isFull(); 
+		int listSize(); 
+		int maxlistSize(); 
+		void print(); 
+		void second_max();
+		bool isItemAtEqual(int location, int item); 
+		void insertAt(int location, int insertItem);
+		void insertEnd(int insertItem);
+		void removeAt(int location);
+		void retrieveAt(int location, int& retItem); 
+		void replaceAt(int location, int repItem);
+		void clearList();
+		int seqSearch(int item);
+		void insert(int insertItem);
+		void remove(int removeItem);
+		arrayListType(const arrayListType& otherList);
+		~arrayListType(); 
+		bool swap(int , int);
+
+};
+
+
+#include "arrayListType.h"
+#include<iostream>
+using namespace std;
+
+arrayListType::arrayListType(int size)
+{
+	if (size < 0)
+	{
+		cout << "The array size must be positive.Creaing an array of size 100 ." << endl;
+		maxSize = 100;
+	}
+	else
+		maxSize = size;
+	length = 0;
+	list = new int[maxSize];
+
+}
+
+bool arrayListType::isEmpty()
+{
+	return(length == 0);
+}
+
+bool arrayListType::isFull()
+{
+	return(length == maxSize);
+}
+
+int arrayListType::listSize()
+{
+	return length;
+}
+
+int arrayListType::maxlistSize()
+{
+	return maxSize;
+}
+
+void arrayListType::print()
+{
+	int i;
+	for (i = 0; i < length; i++)
+		cout << list[i] << " ";
+}
+
+bool arrayListType::isItemAtEqual(int location, int item)
+{
+	return(list[location] == item);
+}
+
+void arrayListType::insertAt(int location, int insertItem)
+{
+	int i;
+	if (location < 0 || location >= maxSize)
+		cout << "The position (location) of the item to be inserted is out of range " << endl;
+	else
+		if (length >= maxSize)
+			cout << "Cannot insert in a full list " << endl;
+		else
+		{
+			i = length;
+			while (i > location)
+			{
+				list[i] = list[i - 1];
+				i--;
+			}
+				
+			list[location] = insertItem;
+			length++;
+		}
+}
+
+bool arrayListType::swap(int a , int b) {;
+
+	cout << " Before swap is : " << " a = " << list[a] << " and b = " << list[b];
+
+	if (a >= 0 && b >= 0 && a < length && b < length) {
+		int temp;
+		temp = list[a];
+		list[a] = list[b];
+		list[b] = temp;
+
+		cout << " After swap is : " << " a = " << list[a] << " and b = " << list[b];
+
+		return true;
+	}
+	else
+		cout << " The swap is Worng . "; 
+		return false;
+}
+
+int arrayListType::most_repeated()
+{
+	int elemnts = -1 ;
+	int most = 0;
+	for (int i = 0; i < length-1; i++)
+	{
+		int count = 0;
+		for (int j = i+1 ; j < length; j++)
+		{
+			if (list[i] == list[j]) {
+				count++;
+			}
+		}
+
+		if (count > most)
+		{
+			most = count;
+			elemnts = list[i];
+		}
+			
+	}
+	return elemnts;
+
+}
+	
+
+
+void arrayListType::second_max()
+{
+	int second;
+
+		if (list[0] < list[1])
+		{
+			maxSize =list[1];
+			second = list[0];
+		}
+
+		else
+		{
+			maxSize = list[0];
+			second = list[1];
+		}
+		
+		int i = 2;
+		while( i < length)
+		{
+			if (list[i] > maxSize)
+			{
+				second = maxSize;
+				maxSize = list[i];
+			}
+			else if (list[i] > second && list[i] != maxSize)
+				second = list[i];
+			i++;
+		}
+		cout << "second is :" << second;
+
+}
+
+void arrayListType::insertEnd(int insertItem)
+{
+	if (length >= maxSize)
+		cout << "Cannot insert in a full list " << endl;
+	else
+	{
+		list[length] = insertItem;
+		length++;
+	}
+}
+
+void arrayListType::removeAt(int location)
+{
+	int i;
+	if (location < 0 || location >= length)
+		cout << "The location of the item to be removed is out of range " << endl;
+	else
+	{
+		for (i = location; i < length - 1; i++)
+			list[i] = list[i + 1];
+		length--;
+	}
+}
+
+void arrayListType::retrieveAt(int location, int& retItem)
+{
+	if (location < 0 || location >= length)
+		cout << "The location of the item to be retrieved is out of range " << endl;
+	else
+		retItem = list[location];
+}
+
+void arrayListType::replaceAt(int location, int repItem)
+{
+	if (location < 0 || location >= length)
+		cout << "The location of the item to be replacet is range " << endl;
+	else
+		list[location] = repItem;
+}
+
+void arrayListType::clearList()
+{
+	length=0 ;
+}
+
+arrayListType::~arrayListType()
+{
+	delete[]list;
+}
+
+arrayListType::arrayListType(const arrayListType& otherList)
+{
+	int j;
+	maxSize = otherList.maxSize;
+	length = otherList.length;
+	list = new int[maxSize];
+	if (length != 0)
+		for (j = 0; j < length; j++)
+			list[j] = otherList.list[j];
+}
+
+int arrayListType::seqSearch(int item)
+{
+	int loc;
+	bool found = false;
+	for (loc = 0; loc < length; loc++)
+		if (list[loc] == item)
+		{
+			found = true;
+			break;
+		}
+	if (found)
+		return loc;
+	else
+		return -1;
+}
+
+void arrayListType::insert(int insertItem)
+{
+	int loc;
+	if (length == 0)
+		list[length++] = insertItem;
+	else
+		if (length == maxSize)
+			cout << "Cannot insert in a full list" << endl;
+		else
+		{
+			loc = seqSearch(insertItem);
+			if (loc == -1)
+				list[length++] = insertItem;
+			
+		}
+}
+
+void arrayListType::remove(int removeItem)
+{
+	int loc;
+	if (length == 0)
+		cout << "Cannot delet from an empty list ." << endl;
+	else
+	{
+		loc = seqSearch(removeItem);
+		if (loc != -1)
+			removeAt(loc);
+		else
+			cout << "The tem to be deleted is not in the list . " << endl;
+	}
+}
+
+
+
+
+// lap1 - ( DS ).cpp : This file contains the 'main' function. Program execution begins and ends there.
+//
+
+//templet <class T >
+#include<iostream>
+#include"arrayListType.h"
+	using namespace std;
+	int main()
+	{
+		arrayListType list; 
+		int num;
+		int D, N;
+		cout << " Enter listes' number :- To end Enter -999" << endl;
+		cin >> num;
+		while (num != -999)
+		{
+			list.insert(num);
+			cin >> num;
+		}
+		
+		
+		cout << "The list you entered is : " << endl;
+		list.print();
+
+		cout << "\nThe list size is : " << list.listSize() << endl;
+		cout << "The list Max size  " << list.maxlistSize() << endl;
+		
+			list.second_max();
+		cout << "enter the numbers you want to swap : ";
+		cin >> D;
+		cin >> N;
+		list.swap(D,N);
+		cout << "\nthe list after swap : "<<endl;
+		list.print();
+		
+		cout << "\nThe list isEmpty function return : " << list.isEmpty() << endl;
+		cout << "The list isFull function return : " << list.isFull() << endl;
+		cin >> num;
+
+		cout << "\n the repeated :";
+		cout << list.most_repeated();
+		return 0;
+	}
+
